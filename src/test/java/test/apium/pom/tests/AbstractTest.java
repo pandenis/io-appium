@@ -5,7 +5,11 @@ import io.appium.java_client.remote.AndroidMobileCapabilityType;
 import io.appium.java_client.remote.MobileCapabilityType;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 
+import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -27,6 +31,18 @@ public abstract class AbstractTest{
         capabilities.setCapability(AndroidMobileCapabilityType.APP_ACTIVITY, Utils.APP_ACTIVITY_NAME);
         androidDriver = new AndroidDriver(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
 
+    }
+    String testName;
+
+    @BeforeMethod
+    public void BeforeTest(Method method){
+        androidDriver.resetApp();
+        testName  = method.getName();
+    }
+
+    @AfterClass
+    public void closeDriver() {
+        androidDriver.quit();
     }
 
 
