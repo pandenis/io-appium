@@ -7,10 +7,8 @@ import io.appium.java_client.pagefactory.AndroidFindBy;
 public class LoginPage extends Page{
 
     public LoginPage(AndroidDriver androidDriver) {
-        super();
+        super(androidDriver);
     }
-
-
 
     @AndroidFindBy(id = "name")
     private AndroidElement nameElement;

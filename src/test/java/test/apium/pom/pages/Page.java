@@ -15,11 +15,6 @@ public abstract class Page {
         PageFactory.initElements(new AppiumFieldDecorator(androidDriver), this);
     }
 
-    public Page() {
-
-    }
-
-
     public void hideKeyboardIfVisible() {
         if (androidDriver.isKeyboardShown()) {
             androidDriver.hideKeyboard();
