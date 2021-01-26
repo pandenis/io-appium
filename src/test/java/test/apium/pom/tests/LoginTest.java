@@ -4,8 +4,8 @@ import org.testng.annotations.*;
 import test.apium.pom.pages.LoginPage;
 import test.apium.pom.pages.ProfilePage;
 
+import java.lang.reflect.Method;
 import java.net.MalformedURLException;
-
 
 public class LoginTest extends AbstractTest {
 
@@ -13,12 +13,19 @@ public class LoginTest extends AbstractTest {
     public LoginTest() throws MalformedURLException {
         super();
     }
-    @BeforeSuite
+    String testName;
+
+    @BeforeMethod
     public void BeforeTest(){
         androidDriver.resetApp();
     }
-    @Test(testName = "Positive Login Test", priority = 1)
 
+    @BeforeMethod
+    public void handleTestMethodName(Method method) {
+        testName  = method.getName();
+    }
+
+    @Test(testName = "01. Positive Login Test")
     public void PositiveTest() {
 
         LoginPage loginPage = new LoginPage(androidDriver);
@@ -26,13 +33,27 @@ public class LoginTest extends AbstractTest {
 
         loginPage.login(Utils.USERNAME, Utils.CORRECT_PASSWORD);
         ProfilePage profilePage = new ProfilePage(androidDriver);
-        Assert.assertTrue(profilePage.isDisplaying(), "Test completed successfully!");
+        Assert.assertTrue(profilePage.isDisplaying());
 
-        System.out.println("Test completed successfully!");
+        System.out.println("Test " + testName + " completed successfully!");
 
     }
 
-    @AfterSuite
+    @Test(testName = "02. Wrong Password Test")
+    public void WrongPassword() {
+
+        LoginPage loginPage = new LoginPage(androidDriver);
+        Assert.assertTrue(loginPage.isDisplaying());
+
+        loginPage.login(Utils.USERNAME, Utils.INCORRECT_PASSWORD);
+//        ProfilePage profilePage = new ProfilePage(androidDriver);
+        Assert.assertTrue(loginPage.isDisplaying());
+
+        System.out.println("Test" + testName + "completed successfully!");
+    }
+
+
+    @AfterMethod
     public void closeDriver() {
         androidDriver.quit();
     }
